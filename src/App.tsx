@@ -1,14 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import Cesium, {
     ArcGisMapServerImageryProvider,
-    Cartesian2,
     Cartesian3,
     Color,
-    EntityCollection,
     GoogleMaps,
     HorizontalOrigin,
     NearFarScalar,
-    Request,
-    RequestType,
     ScreenSpaceEventType,
     Transforms,
     createGooglePhotorealistic3DTileset,
@@ -18,10 +15,8 @@ import {
     Entity,
     BillboardGraphics,
     EntityDescription,
-    CameraFlyTo,
     ImageryLayer,
     Cesium3DTileset,
-    Scene,
     ScreenSpaceEventHandler,
     ScreenSpaceEvent,
     PolylineCollection,
@@ -30,35 +25,50 @@ import {
     LabelGraphics,
     LabelCollection,
 } from 'resium'
-import mockData from './test/mock/mockData.json'
 import { useEffect, useState } from 'react'
 import { Polyline as PolylineType } from './types/data'
 import { CanvasEntity } from './components/Canvas'
+import { UploadButton } from './components/UploadButton/UploadButton'
 
 const App = () => {
-    const [data, setData] = useState<PolylineType[]>([])
+    const [data, setData] = useState<PolylineType[]>([
+        {
+            label: 'Bear',
+            title: 'Какой-то заголовок к описанию фото',
+            description:
+                'Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации Здесь ваш текст.. Здесь ваш текст.. Здесь ваш текст.',
+            latitude: 55.1641667,
+            longitude: 37.9522222,
+            altitude: 20000,
+            accuracy: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+            timeStamp: 1707153996,
+        },
+    ])
     const [positions, setPositions] = useState<Cartesian3[]>([
         new Cartesian3(-75, 35, 0),
         new Cartesian3(-125, 35, 0),
         new Cartesian3(-125, 135, 0),
     ])
 
-    useEffect(() => {
-        setData(mockData.data)
+    // useEffect(() => {
+    //     setData(mockData.data)
 
-        async function addGoogleP3T() {
-            try {
-                const tileset = await createGooglePhotorealistic3DTileset()
-                // scene.primitives.add(tileset)
-            } catch (error) {
-                console.log(
-                    `Ошибка загрузки Google Photorealistic 3DTileset. ${error}`
-                )
-            }
-        }
+    //     async function addGoogleP3T() {
+    //         try {
+    //             const tileset = await createGooglePhotorealistic3DTileset()
+    //             // scene.primitives.add(tileset)
+    //         } catch (error) {
+    //             console.log(
+    //                 `Ошибка загрузки Google Photorealistic 3DTileset. ${error}`
+    //             )
+    //         }
+    //     }
 
-        addGoogleP3T()
-    }, [data])
+    //     // addGoogleP3T()
+    // }, [data])
 
     // Добавление фотореалистичной 3D Tiles (карты). Для этого нужно GoogleMaps.defaultApiKey
     GoogleMaps.defaultApiKey = ''
@@ -72,7 +82,7 @@ const App = () => {
         console.log(positions)
     }
 
-    const center = Cartesian3.fromDegrees(-75.59777, 40.03883)
+    const center = Cartesian3.fromDegrees(-75.59777, 40.03883, 0)
 
     return (
         <Viewer
@@ -103,7 +113,6 @@ const App = () => {
         >
             <ScreenSpaceEventHandler>
                 <ScreenSpaceEvent
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     action={(e) => onAddPosition(e.position.x, e.position.y)}
                     type={ScreenSpaceEventType.RIGHT_CLICK}
@@ -148,7 +157,7 @@ const App = () => {
                 {data.map((info) => (
                     <Entity
                         key={info.timeStamp}
-                        name="Какой-то заголовок к описанию фото"
+                        name={info.title}
                         position={Cartesian3.fromDegrees(
                             info.latitude,
                             info.longitude
@@ -187,7 +196,7 @@ const App = () => {
                                 info.longitude
                             )}
                             label={{
-                                text: 'Bear',
+                                text: `${info.label}`,
                                 font: '20px sans-serif',
                                 fillColor: Color.WHITE,
                                 outlineColor: Color.TRANSPARENT,
@@ -199,20 +208,13 @@ const App = () => {
                             }}
                         />
                         <EntityDescription>
-                            <div>
-                                Давно выяснено, что при оценке дизайна и
-                                композиции читаемый текст мешает
-                                сосредоточиться. Lorem Ipsum используют потому,
-                                что тот обеспечивает более или менее стандартное
-                                заполнение шаблона, а также реальное
-                                распределение букв и пробелов в абзацах, которое
-                                не получается при простой дубликации Здесь ваш
-                                текст.. Здесь ваш текст.. Здесь ваш текст.
-                            </div>
+                            <div>{info.description}</div>
                         </EntityDescription>
                     </Entity>
                 ))}
             </ScreenSpaceEventHandler>
+
+            <UploadButton setData={setData} />
         </Viewer>
     )
 }

@@ -1,4 +1,7 @@
 export interface Polyline {
+    label: string | undefined
+    title: string | undefined
+    description: string | undefined
     latitude: number // Широта
     longitude: number // Долгота
     altitude: number | undefined // Высота
