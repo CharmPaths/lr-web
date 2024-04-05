@@ -1,39 +1,43 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { App, Button, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import exif from 'exif-js'
 import styles from './UploadButton.module.css'
-import { Polyline } from '../../types/data'
 import { useState } from 'react'
+import { drawMark } from '../../helpers/drawMark'
+import { useAppDispatch } from '../../hooks/redux.hook'
+import { addPhoto } from '../../redux/reducers/photo.reducer'
+import { openModal } from '../../redux/reducers/modalToChangePhotoInfo.reducer'
+import { setActivePhoto } from '../../redux/reducers/activePhoto.reducer'
 
-interface IUploadButtonProps {
-    setData: React.Dispatch<React.SetStateAction<Polyline[]>>
-}
-
-export const UploadButton = ({ setData }: IUploadButtonProps) => {
+export const UploadButton = () => {
     const { notification } = App.useApp()
     const [fileList, setFileList] = useState([])
+    const dispatch = useAppDispatch()
 
     const getPhotoLocation = (photo: File) => {
-        console.log(photo)
-
         exif.getData(photo as unknown as string, function () {
-            // @ts-ignore
-            const latitude = exif.getTag(this, 'GPSLatitude')
-            // @ts-ignore
-            const longitude = exif.getTag(this, 'GPSLongitude')
+            console.log(photo)
+
+            const latitude = exif.getTag(photo, 'GPSLatitude')
+            const longitude = exif.getTag(photo, 'GPSLongitude')
 
             if (latitude && longitude) {
                 const lat = latitude[0] + latitude[1] / 60 + latitude[2] / 3600
                 const lon =
                     longitude[0] + longitude[1] / 60 + longitude[2] / 3600
 
-                setData((prev: Polyline[]) => [
-                    ...prev,
-                    {
-                        label: '',
+                const mark = drawMark()
+
+                const id = Math.floor(Math.random() * 999999999999999)
+
+                dispatch(setActivePhoto(id))
+                dispatch(
+                    addPhoto({
+                        id: id,
                         title: '',
                         description: '',
+                        canvas: mark?.canvas ?? null,
+                        image: mark?.image,
                         latitude: lat,
                         longitude: lon,
                         altitude: 0,
@@ -42,10 +46,12 @@ export const UploadButton = ({ setData }: IUploadButtonProps) => {
                         heading: null,
                         speed: null,
                         timeStamp: Date.now(),
-                    },
-                ])
+                    })
+                )
+                dispatch(openModal())
                 setFileList([])
-                console.log(`Latitude: ${lat}, Longitude: ${lon}`)
+
+                return mark?.canvas
             } else {
                 notification.warning({
                     message: 'В загруженной фотографии нет координат',

@@ -1,0 +1,17 @@
+.footer {
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    gap: 20px;
+}

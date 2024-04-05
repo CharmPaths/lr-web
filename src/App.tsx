@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import Cesium, {
+import {
     ArcGisMapServerImageryProvider,
     Cartesian3,
+    Cartographic,
     Color,
-    GoogleMaps,
+    Ellipsoid,
     HorizontalOrigin,
+    Math,
     NearFarScalar,
     ScreenSpaceEventType,
-    Transforms,
-    createGooglePhotorealistic3DTileset,
 } from 'cesium'
 import {
     Viewer,
@@ -16,73 +16,63 @@ import {
     BillboardGraphics,
     EntityDescription,
     ImageryLayer,
-    Cesium3DTileset,
     ScreenSpaceEventHandler,
     ScreenSpaceEvent,
-    PolylineCollection,
-    Polyline,
     PolylineGraphics,
     LabelGraphics,
     LabelCollection,
 } from 'resium'
-import { useEffect, useState } from 'react'
-import { Polyline as PolylineType } from './types/data'
-import { CanvasEntity } from './components/Canvas'
+import { useRef, useState } from 'react'
 import { UploadButton } from './components/UploadButton/UploadButton'
+import { Footer } from './components/Footer/Footer'
+import { Button, Drawer, Input, Popover, Row } from 'antd'
+import {
+    CloseOutlined,
+    PictureOutlined,
+    SearchOutlined,
+} from '@ant-design/icons'
+import { Card } from './components/Card/Card'
+import styles from './App.module.css'
+import { useAppDispatch, useAppSelector } from './hooks/redux.hook'
+import { getPhotoInfo } from './redux/actions/getPhotoInfo.action'
+import { changePhotoInfo } from './redux/reducers/photo.reducer'
+import { closeDrawer, openDrawer } from './redux/reducers/drawerPhoto.reducer'
+import { ModalChangePhotoInfo } from './components/ModalChangePhotoInfo/ModalChangePhotoInfo'
+import { resetActivePhoto } from './redux/reducers/activePhoto.reducer'
 
 const App = () => {
-    const [data, setData] = useState<PolylineType[]>([
-        {
-            label: 'Bear',
-            title: 'Какой-то заголовок к описанию фото',
-            description:
-                'Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах, которое не получается при простой дубликации Здесь ваш текст.. Здесь ваш текст.. Здесь ваш текст.',
-            latitude: 55.1641667,
-            longitude: 37.9522222,
-            altitude: 20000,
-            accuracy: null,
-            altitudeAccuracy: null,
-            heading: null,
-            speed: null,
-            timeStamp: 1707153996,
-        },
-    ])
+    const photo = useAppSelector((state) => state.photo.items)
+    const drawerPhoto = useAppSelector((state) => state.drawerPhoto)
+    const { id: activePhoto } = useAppSelector((state) => state.activePhoto)
+    const dispatch = useAppDispatch()
+    const viewer = useRef(null)
+
     const [positions, setPositions] = useState<Cartesian3[]>([
         new Cartesian3(-75, 35, 0),
         new Cartesian3(-125, 35, 0),
         new Cartesian3(-125, 135, 0),
     ])
 
-    // useEffect(() => {
-    //     setData(mockData.data)
-
-    //     async function addGoogleP3T() {
-    //         try {
-    //             const tileset = await createGooglePhotorealistic3DTileset()
-    //             // scene.primitives.add(tileset)
-    //         } catch (error) {
-    //             console.log(
-    //                 `Ошибка загрузки Google Photorealistic 3DTileset. ${error}`
-    //             )
-    //         }
-    //     }
-
-    //     // addGoogleP3T()
-    // }, [data])
-
-    // Добавление фотореалистичной 3D Tiles (карты). Для этого нужно GoogleMaps.defaultApiKey
-    GoogleMaps.defaultApiKey = ''
-    const tileset = () => <Cesium3DTileset url="" />
-
     const onAddPosition = (x: number, y: number) => {
-        setPositions((prevPositions) => [
-            ...prevPositions,
-            new Cartesian3(x * 20, y * 20, 0),
-        ])
-        console.log(positions)
+        if (activePhoto) {
+            const item = getPhotoInfo(photo, activePhoto)
+            dispatch(
+                changePhotoInfo({
+                    ...item,
+                    id: activePhoto,
+                    latitude: x,
+                    longitude: y,
+                })
+            )
+            dispatch(resetActivePhoto())
+            dispatch(openDrawer())
+        } else {
+            setPositions((prevPositions) => [
+                ...prevPositions,
+                new Cartesian3(x, y, 0),
+            ])
+        }
     }
-
-    const center = Cartesian3.fromDegrees(-75.59777, 40.03883, 0)
 
     return (
         <Viewer
@@ -110,19 +100,31 @@ const App = () => {
             requestRenderMode
             full
             useBrowserRecommendedResolution
+            ref={viewer}
         >
             <ScreenSpaceEventHandler>
                 <ScreenSpaceEvent
-                    // @ts-ignore
-                    action={(e) => onAddPosition(e.position.x, e.position.y)}
-                    type={ScreenSpaceEventType.RIGHT_CLICK}
-                />
+                    action={(e) => {
+                        // @ts-ignore
+                        const { x, y } = e.position
+                        console.log(e)
 
-                <PolylineCollection
-                    modelMatrix={Transforms.eastNorthUpToFixedFrame(center)}
-                >
-                    <Polyline positions={positions} />
-                </PolylineCollection>
+                        const cartesian33 = new Cartesian3(x, y, 0)
+                        const a = new Ellipsoid(x, y).cartesianToCartographic(
+                            cartesian33
+                        )
+                        console.log(a)
+                        // TODO: Есть проблема с широтой (latitude). Когда мы создаем объект типа Cartesian3 и затем из него переводим в Cartographic, чтобы получить широту и долготу, широта всегда равна 0 (какие бы я способы не применял). И у меня уже кончились догадки почему это может происходить
+
+                        const cartographic =
+                            Cartographic.fromCartesian(cartesian33)
+                        const lat = Math.toDegrees(cartographic.latitude)
+                        const lng = Math.toDegrees(cartographic.longitude)
+
+                        onAddPosition(lat, lng)
+                    }}
+                    type={ScreenSpaceEventType.LEFT_CLICK}
+                />
 
                 <LabelCollection>
                     <Entity>
@@ -138,83 +140,97 @@ const App = () => {
                     ))}
                 </LabelCollection>
 
-                <CanvasEntity
-                    name="Canvas title"
-                    description="Canvas description"
-                    position={Cartesian3.fromDegrees(
-                        74.0707383,
-                        40.7117244,
-                        100
-                    )}
-                />
-
                 <ImageryLayer
                     imageryProvider={ArcGisMapServerImageryProvider.fromUrl(
                         'https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer'
                     )}
                 />
 
-                {data.map((info) => (
+                {photo.map((info) => (
                     <Entity
                         key={info.timeStamp}
                         name={info.title}
                         position={Cartesian3.fromDegrees(
                             info.latitude,
-                            info.longitude
+                            info.latitude
                         )}
                     >
-                        {/* <CameraFlyTo
-                            duration={5}
-                            destination={Cartesian3.fromDegrees(
-                                info.latitude,
-                                info.longitude,
-                                info.altitude ?? 20000
-                            )}
-                        /> */}
-
                         {/* Background фото */}
                         <BillboardGraphics
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            image="media/bear.jpg"
+                            image={info.canvas ?? info.image ?? ''}
                             width={100}
                             height={100}
                             scale={1.0}
                             eyeOffset={Cartesian3.ZERO}
                             horizontalOrigin={HorizontalOrigin.CENTER}
-                            // verticalOrigin={VerticalOrigin.BOTTOM}
                             color={Color.WHITE}
                             alignedAxis={Cartesian3.ZERO}
                             scaleByDistance={
                                 new NearFarScalar(1.5e2, 1.0, 1.5e7, 0.5)
                             }
                         />
-                        {/* Добавление тегов */}
-                        <Entity
-                            position={Cartesian3.fromDegrees(
-                                info.latitude,
-                                info.longitude
-                            )}
-                            label={{
-                                text: `${info.label}`,
-                                font: '20px sans-serif',
-                                fillColor: Color.WHITE,
-                                outlineColor: Color.TRANSPARENT,
-                                style: 2,
-                                outlineWidth: 50,
-                                pixelOffset: new Cartesian3(0, -70, 0), // смещение label по вертикали
-                                showBackground: true,
-                                backgroundColor: new Color(0, 0, 0, 0),
-                            }}
-                        />
                         <EntityDescription>
                             <div>{info.description}</div>
                         </EntityDescription>
                     </Entity>
                 ))}
-            </ScreenSpaceEventHandler>
 
-            <UploadButton setData={setData} />
+                <Drawer
+                    width="100vw"
+                    open={drawerPhoto.isOpen}
+                    title={
+                        <div className={styles.drawerContent}>
+                            <h2 className={styles.drawerTitle}>
+                                Загруженные фотографии
+                            </h2>
+                            <Popover
+                                content={
+                                    <div className={styles.drawerSearchWrapper}>
+                                        <Row>
+                                            <Input placeholder="Поиск по названию фотографии" />
+                                        </Row>
+                                    </div>
+                                }
+                                trigger="click"
+                                placement="bottomLeft"
+                            >
+                                <Button
+                                    icon={<SearchOutlined />}
+                                    type="text"
+                                    style={{ color: '#f4f4f4' }}
+                                />
+                            </Popover>
+                        </div>
+                    }
+                    style={{ backgroundColor: '#262626', color: '#F4F4F4' }}
+                    closeIcon={<CloseOutlined style={{ color: '#f4f4f4' }} />}
+                    onClose={() => dispatch(closeDrawer())}
+                >
+                    <Row>
+                        {photo.length > 0 ? (
+                            photo.map((item) => (
+                                <Card key={item.id} {...item} />
+                            ))
+                        ) : (
+                            <h3 className={styles.drawerEmptyContent}>
+                                У Вас пока нет загруженных фотографий
+                            </h3>
+                        )}
+                    </Row>
+                </Drawer>
+
+                <ModalChangePhotoInfo />
+
+                <Footer>
+                    <>
+                        <UploadButton />
+                        <Button
+                            icon={<PictureOutlined />}
+                            onClick={() => dispatch(openDrawer())}
+                        />
+                    </>
+                </Footer>
+            </ScreenSpaceEventHandler>
         </Viewer>
     )
 }

@@ -20,15 +20,18 @@ code {
     display: none;
 }
 
-/* .cesium-infoBox {
-    background: #fff;
-    color: #000;
-}
-
-.cesium-infoBox-description {
-    color: #000;
-} */
-
 .cesium-infoBox-title {
     background-color: transparent;
+}
+
+.ant-drawer-body::-webkit-scrollbar {
+    width: 7px; /* ширина scrollbar */
+}
+.ant-drawer-body::-webkit-scrollbar-track {
+    background: #262626; /* цвет дорожки */
+}
+.ant-drawer-body::-webkit-scrollbar-thumb {
+    background-color: #f4f4f4; /* цвет плашки */
+    border-radius: 20px; /* закругления плашки */
+    border: 2px solid #262626; /* padding вокруг плашки */
 }
