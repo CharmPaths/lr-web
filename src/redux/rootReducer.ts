@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { photoReducer } from './reducers/photo.reducer'
-import { drawerPhotoReducer } from './reducers/drawerPhoto.reducer'
-import { modalToChangePhotoInfoReducer } from './reducers/modalToChangePhotoInfo.reducer'
-import { activePhotoReducer } from './reducers/activePhoto.reducer'
+import { photosSlice } from './slices/photos'
+import { drawerPhotoSlice } from './slices/drawerPhoto.'
+import { modalToChangePhotoInfoSlice } from './slices/modalToChangePhotoInfo'
+import { activePhotoSlice } from './slices/activePhoto'
 
 export const store = configureStore({
     reducer: {
-        photo: photoReducer,
-        drawerPhoto: drawerPhotoReducer,
-        modalToChangePhotoInfo: modalToChangePhotoInfoReducer,
-        activePhoto: activePhotoReducer,
+        [photosSlice.name]: photosSlice.reducer,
+        [drawerPhotoSlice.name]: drawerPhotoSlice.reducer,
+        [modalToChangePhotoInfoSlice.name]: modalToChangePhotoInfoSlice.reducer,
+        [activePhotoSlice.name]: activePhotoSlice.reducer,
     },
 })
 

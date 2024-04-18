@@ -2,8 +2,6 @@ export interface Polyline {
     id: number | string
     title: string | undefined
     description: string | undefined
-    canvas: HTMLCanvasElement | null
-    image: string | undefined
     latitude: number // Широта
     longitude: number // Долгота
     altitude: number | undefined // Высота

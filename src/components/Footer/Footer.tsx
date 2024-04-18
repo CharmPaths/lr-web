@@ -1,7 +1,7 @@
 import styles from './Footer.module.css'
 
 interface IFooterProps {
-    children: React.JSX.Element
+    children: React.ReactNode
 }
 
 export const Footer = ({ children }: IFooterProps) => {

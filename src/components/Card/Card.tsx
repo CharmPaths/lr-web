@@ -1,25 +1,32 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import styles from './Card.module.css'
 import { Polyline } from '../../types/types'
 import { Button, Col, Row, Skeleton, Typography } from 'antd'
 import { EditOutlined } from '@ant-design/icons'
-import { useAppDispatch } from '../../hooks/redux.hook'
 import { ModalChangePhotoInfo } from '../ModalChangePhotoInfo/ModalChangePhotoInfo'
-import { openModal } from '../../redux/reducers/modalToChangePhotoInfo.reducer'
-import { setActivePhoto } from '../../redux/reducers/activePhoto.reducer'
+import { openModal } from '../../redux/slices/modalToChangePhotoInfo'
+import { setActivePhoto } from '../../redux/slices/activePhoto'
+import { useAppDispatch } from '../../redux/hooks'
 
 const { Paragraph } = Typography
 
-export const Card = (props: Polyline) => {
-    const { id, image, title, description, latitude, longitude } = props
+type CardProps = Polyline & {
+    imageSrc: string
+}
+
+export const Card = ({ imageSrc, ...polyline }: CardProps) => {
     const dispatch = useAppDispatch()
+    const { id, title, description, latitude, longitude } = polyline
 
     return (
         <Col className={styles.cardContainer}>
             <Row>
                 <div className={styles.imageWrapper}>
-                    {image ? (
-                        <img src={image} alt={title} className={styles.image} />
+                    {imageSrc ? (
+                        <img
+                            src={imageSrc}
+                            alt={title}
+                            className={styles.image}
+                        />
                     ) : (
                         <Skeleton.Button
                             style={{ width: 300, height: 200 }}
@@ -33,7 +40,7 @@ export const Card = (props: Polyline) => {
                         ghost
                         onClick={() => {
                             dispatch(setActivePhoto(id))
-                            dispatch(openModal())
+                            dispatch(openModal(polyline))
                         }}
                     />
                 </div>

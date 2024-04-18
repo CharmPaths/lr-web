@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { createSlice } from '@reduxjs/toolkit'
 
 interface IInitState {
@@ -10,7 +9,7 @@ const initialState: IInitState = {
 }
 
 export const drawerPhotoSlice = createSlice({
-    name: 'photo',
+    name: 'drawerPhoto',
     initialState,
     reducers: {
         openDrawer: (state) => {
@@ -23,4 +22,3 @@ export const drawerPhotoSlice = createSlice({
 })
 
 export const { openDrawer, closeDrawer } = drawerPhotoSlice.actions
-export const { reducer: drawerPhotoReducer } = drawerPhotoSlice

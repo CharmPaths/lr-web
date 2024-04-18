@@ -2,5 +2,14 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
-    "cSpell.words": ["tileset"]
+    "cSpell.words": [
+        "antd",
+        "exif",
+        "resium",
+        "tileset",
+        "uuidv"
+    ],
+    "[ignore]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    }
 }

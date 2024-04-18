@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { Polyline } from '../../types/types'
 
 interface IInitState {
     isOpen: boolean
@@ -13,12 +14,14 @@ const initialState: IInitState = {
     description: '',
 }
 
-export const modalToChangePhotoInfo = createSlice({
+export const modalToChangePhotoInfoSlice = createSlice({
     name: 'modalToChangePhotoInfo',
     initialState,
     reducers: {
-        openModal: (state) => {
+        openModal: (state, payload: PayloadAction<Polyline>) => {
             state.isOpen = true
+            state.title = payload.payload.title || ''
+            state.description = payload.payload.description || ''
         },
         closeModal: (state) => {
             state.isOpen = false
@@ -44,5 +47,6 @@ export const {
     changeTitle,
     changeDescription,
     resetModal,
-} = modalToChangePhotoInfo.actions
-export const { reducer: modalToChangePhotoInfoReducer } = modalToChangePhotoInfo
+} = modalToChangePhotoInfoSlice.actions
+export const { reducer: modalToChangePhotoInfoReducer } =
+    modalToChangePhotoInfoSlice

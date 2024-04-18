@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, ComponentProps } from 'react'
 import { Entity } from 'resium'
 
 const initCanvas = () => {
@@ -25,9 +25,7 @@ const renderCanvas = (can: HTMLCanvasElement, p: number) => {
     c.fill()
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const CanvasEntity = (props) => {
+export const CanvasEntity = (props: ComponentProps<typeof Entity>) => {
     const c1 = useMemo<HTMLCanvasElement>(initCanvas, [])
     const c2 = useMemo<HTMLCanvasElement>(initCanvas, [])
     const [image, setImage] = useState<HTMLCanvasElement>()

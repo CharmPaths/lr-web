@@ -1,79 +1,16 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import {
-    ArcGisMapServerImageryProvider,
-    Cartesian3,
-    Cartographic,
-    Color,
-    Ellipsoid,
-    HorizontalOrigin,
-    Math,
-    NearFarScalar,
-    ScreenSpaceEventType,
-} from 'cesium'
-import {
-    Viewer,
-    Entity,
-    BillboardGraphics,
-    EntityDescription,
-    ImageryLayer,
-    ScreenSpaceEventHandler,
-    ScreenSpaceEvent,
-    PolylineGraphics,
-    LabelGraphics,
-    LabelCollection,
-} from 'resium'
-import { useRef, useState } from 'react'
-import { UploadButton } from './components/UploadButton/UploadButton'
-import { Footer } from './components/Footer/Footer'
-import { Button, Drawer, Input, Popover, Row } from 'antd'
-import {
-    CloseOutlined,
-    PictureOutlined,
-    SearchOutlined,
-} from '@ant-design/icons'
-import { Card } from './components/Card/Card'
-import styles from './App.module.css'
-import { useAppDispatch, useAppSelector } from './hooks/redux.hook'
-import { getPhotoInfo } from './redux/actions/getPhotoInfo.action'
-import { changePhotoInfo } from './redux/reducers/photo.reducer'
-import { closeDrawer, openDrawer } from './redux/reducers/drawerPhoto.reducer'
+import { ArcGisMapServerImageryProvider } from 'cesium'
+import { Viewer, ImageryLayer, ScreenSpaceEventHandler } from 'resium'
 import { ModalChangePhotoInfo } from './components/ModalChangePhotoInfo/ModalChangePhotoInfo'
-import { resetActivePhoto } from './redux/reducers/activePhoto.reducer'
+import { ImageLibrary } from './components/ImageLibrary'
+import { RouteDesigner } from './components/RouteDesigner'
+import { ImageTags } from './components/ImageTags'
+import { Toolbar } from './components/Toolbar'
+
+const imageryProvider = ArcGisMapServerImageryProvider.fromUrl(
+    'https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer'
+)
 
 const App = () => {
-    const photo = useAppSelector((state) => state.photo.items)
-    const drawerPhoto = useAppSelector((state) => state.drawerPhoto)
-    const { id: activePhoto } = useAppSelector((state) => state.activePhoto)
-    const dispatch = useAppDispatch()
-    const viewer = useRef(null)
-
-    const [positions, setPositions] = useState<Cartesian3[]>([
-        new Cartesian3(-75, 35, 0),
-        new Cartesian3(-125, 35, 0),
-        new Cartesian3(-125, 135, 0),
-    ])
-
-    const onAddPosition = (x: number, y: number) => {
-        if (activePhoto) {
-            const item = getPhotoInfo(photo, activePhoto)
-            dispatch(
-                changePhotoInfo({
-                    ...item,
-                    id: activePhoto,
-                    latitude: x,
-                    longitude: y,
-                })
-            )
-            dispatch(resetActivePhoto())
-            dispatch(openDrawer())
-        } else {
-            setPositions((prevPositions) => [
-                ...prevPositions,
-                new Cartesian3(x, y, 0),
-            ])
-        }
-    }
-
     return (
         <Viewer
             // Пытаюсь заменить глобус Cesium на глобус google
@@ -100,136 +37,14 @@ const App = () => {
             requestRenderMode
             full
             useBrowserRecommendedResolution
-            ref={viewer}
         >
             <ScreenSpaceEventHandler>
-                <ScreenSpaceEvent
-                    action={(e) => {
-                        // @ts-ignore
-                        const { x, y } = e.position
-                        console.log(e)
-
-                        const cartesian33 = new Cartesian3(x, y, 0)
-                        const a = new Ellipsoid(x, y).cartesianToCartographic(
-                            cartesian33
-                        )
-                        console.log(a)
-                        // TODO: Есть проблема с широтой (latitude). Когда мы создаем объект типа Cartesian3 и затем из него переводим в Cartographic, чтобы получить широту и долготу, широта всегда равна 0 (какие бы я способы не применял). И у меня уже кончились догадки почему это может происходить
-
-                        const cartographic =
-                            Cartographic.fromCartesian(cartesian33)
-                        const lat = Math.toDegrees(cartographic.latitude)
-                        const lng = Math.toDegrees(cartographic.longitude)
-
-                        onAddPosition(lat, lng)
-                    }}
-                    type={ScreenSpaceEventType.LEFT_CLICK}
-                />
-
-                <LabelCollection>
-                    <Entity>
-                        <PolylineGraphics
-                            material={Color.WHITE}
-                            positions={positions}
-                        />
-                    </Entity>
-                    {positions.map((p, i) => (
-                        <Entity key={i} position={p}>
-                            <LabelGraphics text={i.toString()} />
-                        </Entity>
-                    ))}
-                </LabelCollection>
-
-                <ImageryLayer
-                    imageryProvider={ArcGisMapServerImageryProvider.fromUrl(
-                        'https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer'
-                    )}
-                />
-
-                {photo.map((info) => (
-                    <Entity
-                        key={info.timeStamp}
-                        name={info.title}
-                        position={Cartesian3.fromDegrees(
-                            info.latitude,
-                            info.latitude
-                        )}
-                    >
-                        {/* Background фото */}
-                        <BillboardGraphics
-                            image={info.canvas ?? info.image ?? ''}
-                            width={100}
-                            height={100}
-                            scale={1.0}
-                            eyeOffset={Cartesian3.ZERO}
-                            horizontalOrigin={HorizontalOrigin.CENTER}
-                            color={Color.WHITE}
-                            alignedAxis={Cartesian3.ZERO}
-                            scaleByDistance={
-                                new NearFarScalar(1.5e2, 1.0, 1.5e7, 0.5)
-                            }
-                        />
-                        <EntityDescription>
-                            <div>{info.description}</div>
-                        </EntityDescription>
-                    </Entity>
-                ))}
-
-                <Drawer
-                    width="100vw"
-                    open={drawerPhoto.isOpen}
-                    title={
-                        <div className={styles.drawerContent}>
-                            <h2 className={styles.drawerTitle}>
-                                Загруженные фотографии
-                            </h2>
-                            <Popover
-                                content={
-                                    <div className={styles.drawerSearchWrapper}>
-                                        <Row>
-                                            <Input placeholder="Поиск по названию фотографии" />
-                                        </Row>
-                                    </div>
-                                }
-                                trigger="click"
-                                placement="bottomLeft"
-                            >
-                                <Button
-                                    icon={<SearchOutlined />}
-                                    type="text"
-                                    style={{ color: '#f4f4f4' }}
-                                />
-                            </Popover>
-                        </div>
-                    }
-                    style={{ backgroundColor: '#262626', color: '#F4F4F4' }}
-                    closeIcon={<CloseOutlined style={{ color: '#f4f4f4' }} />}
-                    onClose={() => dispatch(closeDrawer())}
-                >
-                    <Row>
-                        {photo.length > 0 ? (
-                            photo.map((item) => (
-                                <Card key={item.id} {...item} />
-                            ))
-                        ) : (
-                            <h3 className={styles.drawerEmptyContent}>
-                                У Вас пока нет загруженных фотографий
-                            </h3>
-                        )}
-                    </Row>
-                </Drawer>
-
+                <ImageryLayer imageryProvider={imageryProvider} />
+                <RouteDesigner />
+                <ImageTags />
+                <ImageLibrary />
                 <ModalChangePhotoInfo />
-
-                <Footer>
-                    <>
-                        <UploadButton />
-                        <Button
-                            icon={<PictureOutlined />}
-                            onClick={() => dispatch(openDrawer())}
-                        />
-                    </>
-                </Footer>
+                <Toolbar />
             </ScreenSpaceEventHandler>
         </Viewer>
     )

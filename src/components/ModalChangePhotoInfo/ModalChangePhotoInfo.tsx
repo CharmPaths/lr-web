@@ -2,29 +2,21 @@ import { Button, Input, Modal, Popover, Row } from 'antd'
 import styles from './ModalChangePhotoInfo.module.css'
 import TextArea from 'antd/es/input/TextArea'
 import { AimOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import {
     changeDescription,
     changeTitle,
     closeModal,
     resetModal,
-} from '../../redux/reducers/modalToChangePhotoInfo.reducer'
-import { changePhotoInfo } from '../../redux/reducers/photo.reducer'
-import { closeDrawer } from '../../redux/reducers/drawerPhoto.reducer'
-import { getPhotoInfo } from '../../redux/actions/getPhotoInfo.action'
-import { useEffect } from 'react'
+} from '../../redux/slices/modalToChangePhotoInfo'
+import { photoActions } from '../../redux/slices/photos'
+import { closeDrawer } from '../../redux/slices/drawerPhoto.'
+import { activePhotoSelector } from '../../redux/slices/activePhoto'
 
 export const ModalChangePhotoInfo = () => {
-    const { id } = useAppSelector((state) => state.activePhoto)
-    const photo = useAppSelector((state) => state.photo.items)
+    const id = useAppSelector(activePhotoSelector)
     const modal = useAppSelector((state) => state.modalToChangePhotoInfo)
-    const photoInfo = getPhotoInfo(photo, id)
     const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        dispatch(changeTitle(photoInfo?.title ?? ''))
-        dispatch(changeDescription(photoInfo?.description ?? ''))
-    }, [photoInfo?.title, photoInfo?.description])
 
     return (
         <Modal
@@ -70,15 +62,6 @@ export const ModalChangePhotoInfo = () => {
                         className={styles.btn}
                         onClick={() => {
                             dispatch(closeDrawer())
-                            dispatch(
-                                changePhotoInfo({
-                                    ...photoInfo,
-                                    id: id,
-                                    title: modal.title,
-                                    description: modal.description,
-                                })
-                            )
-                            dispatch(resetModal())
                         }}
                     >
                         Указать точку на карте
@@ -91,11 +74,12 @@ export const ModalChangePhotoInfo = () => {
                     type="primary"
                     onClick={() => {
                         dispatch(
-                            changePhotoInfo({
-                                ...photoInfo,
+                            photoActions.changePhotoInfo({
                                 id: id,
-                                title: modal.title,
-                                description: modal.description,
+                                changes: {
+                                    title: modal.title,
+                                    description: modal.description,
+                                },
                             })
                         )
                         dispatch(resetModal())
