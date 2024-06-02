@@ -1,0 +1,16 @@
+version: '3'
+
+services: 
+  react-app:
+    image: kyznecspm/map-app
+    container_name: map-app
+    restart: always
+    tty: true
+    ports: 
+      - "3000:80"
+    networks: 
+      - node-network
+  
+networks: 
+  node-network:
+    driver: bridge
