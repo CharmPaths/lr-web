@@ -6,9 +6,6 @@ on:
       types: [completed]
       branches:
           - 'main'
-  push:
-    branches:
-      - 'main'
 
 jobs:
   publish:
