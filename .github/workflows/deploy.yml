@@ -1,6 +1,11 @@
 name: deploy
 
 on:
+  workflow_run:
+      workflows: ['check']
+      types: [completed]
+      branches:
+          - 'main'
   push:
     branches:
       - 'main'
