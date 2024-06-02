@@ -35,7 +35,11 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "lint": "eslint src/**/*.ts src/**/*.tsx",
+        "type-check": "tsc --noEmit",
+        "build:production": "docker build -t map-app .",
+        "start:production": "docker run --name map-app -p 8080:80 -d map-app"
     },
     "eslintConfig": {
         "extends": [
