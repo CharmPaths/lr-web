@@ -12,7 +12,7 @@ import { Helmet } from "react-helmet"
 import { useEffect, useState } from "react"
 import { IPhoto } from "../../types/types"
 
-export const ImageLibrary = () => {
+export const ImageLibrary = (): JSX.Element => {
     const photos = useAppSelector(photosSelector)
     const [filterPhotos, setFilterPhotos] = useState<IPhoto[]>(photos)
 

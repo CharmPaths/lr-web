@@ -10,8 +10,9 @@ import { Helmet } from "react-helmet"
 import { ModalChangePhotoInfo } from "./components/ModalChangePhotoInfo/ModalChangePhotoInfo"
 import { useDataBaseInitialStatuses } from "./hooks/useDataBaseInitialStatuses"
 import { tileLayerAttribution, tileLayerUrl } from "./constants"
+import { Routing } from "./components/Routing/Routing"
 
-function App() {
+function App(): JSX.Element {
     useDataBaseInitialStatuses()
 
     return (
@@ -32,6 +33,7 @@ function App() {
                 <Utils />
                 <ImageTags />
                 <RouteDesigner />
+                <Routing />
             </MapContainer>
             <Toolbar />
         </>

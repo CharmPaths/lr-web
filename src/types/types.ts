@@ -4,6 +4,12 @@ export enum EStatus {
     success = "success",
 }
 
+export interface IStatus {
+    id: string
+    title: EStatus
+    description?: string
+}
+
 export interface IPhoto {
     id: number | string
     title: string | undefined
@@ -20,6 +26,11 @@ export interface IPhoto {
     timeStamp: number // Дата создания объекта данных
 }
 
+export interface IImages {
+    id: string
+    fileSrc: string
+}
+
 export interface IModalChangePhotoInfo {
     isOpen: boolean
     title: string | undefined
@@ -30,5 +41,12 @@ export interface IModalChangePhotoInfo {
 export enum EClickType {
     null = "null",
     addPolyline = "addPolyline",
+    addRoute = "addRoute",
     changeLocation = "changeLocation",
+}
+
+export interface IRoute {
+    id: string | number
+    lat: string
+    lng: string
 }

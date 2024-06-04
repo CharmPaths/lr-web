@@ -16,6 +16,15 @@ body {
     display: none;
 }
 
+.leaflet-top ~ .leaflet-right {
+    top: 45px;
+}
+
+.leaflet-routing-container,
+.leaflet-routing-error {
+    width: 265px !important;
+}
+
 .ant-modal-root {
     position: absolute;
     z-index: 1001;

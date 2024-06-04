@@ -2,7 +2,7 @@ import { Button, Popover } from "antd"
 import { InfoCircleOutlined } from "@ant-design/icons"
 import styles from "./InfoBlock.module.css"
 
-export const InfoBlock = () => {
+export const InfoBlock = (): JSX.Element => {
     const hotBtns = [
         {
             name: "Home",
@@ -21,7 +21,7 @@ export const InfoBlock = () => {
             content={
                 <div className={styles.contentWrapper}>
                     <ul className={styles.hotBtns}>
-                        {hotBtns.map((item) => (
+                        {hotBtns?.map((item) => (
                             <li key={item.name} className={styles.hotBtnItem}>
                                 <h4 className={styles.hotBtnTitle}>
                                     «{item.name}»

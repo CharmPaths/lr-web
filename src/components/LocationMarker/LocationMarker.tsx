@@ -3,7 +3,7 @@ import { Marker, Popup, useMapEvents } from "react-leaflet"
 import { Mark } from "../Mark/Mark"
 import { notification } from "antd/lib"
 
-export const LocationMarker = () => {
+export const LocationMarker = (): JSX.Element | null => {
     const [position, setPosition] = useState<{
         lat: number
         lng: number

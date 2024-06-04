@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Button, Popconfirm, Row, message } from "antd/lib"
-import { LatLngExpression } from "leaflet"
-import { useState } from "react"
+import { LatLng, LatLngExpression } from "leaflet"
+import { useEffect, useState } from "react"
 import { Polyline, useMapEvents } from "react-leaflet"
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks"
 import { clickType, setClickType } from "../../../../redux/slices/click"
@@ -9,9 +10,10 @@ import styles from "./Polylines.module.css"
 import cn from "classnames"
 import { v4 as uuidv4 } from "uuid"
 import { Helmet } from "react-helmet"
-import { DeleteOutlined, RiseOutlined } from "@ant-design/icons"
+import { DeleteOutlined, SignatureOutlined } from "@ant-design/icons"
+import { db } from "../../../../database/db"
 
-export const Polylines = () => {
+export const Polylines = (): JSX.Element => {
     const [polylines, setPolilynes] = useState<LatLngExpression[]>([])
     const click = useAppSelector(clickType)
     const dispatch = useAppDispatch()
@@ -38,6 +40,48 @@ export const Polylines = () => {
         return distance
     }
 
+    useEffect(() => {
+        const initPolylines = async () => {
+            try {
+                await db.polylines.toArray().then((res) => {
+                    res?.forEach((polyline) => {
+                        if (polyline) {
+                            setPolilynes((prev) => [
+                                ...prev,
+                                new LatLng(polyline.lat, polyline.lng),
+                            ])
+                        }
+                    })
+                })
+            } catch (e) {
+                console.error(e)
+            }
+        }
+
+        initPolylines()
+
+        return () => {
+            const addPolylinesToDb = async () => {
+                try {
+                    polylines?.forEach(async (polyline) => {
+                        await db.polylines.add({
+                            id: Math.random(),
+                            // TODO: немного подфикстать типы. Сделать проверку
+                            // @ts-ignore
+                            lat: polyline?.lat,
+                            // @ts-ignore
+                            lng: polyline?.lng,
+                        })
+                    })
+                } catch (e) {
+                    console.error(e)
+                }
+            }
+
+            addPolylinesToDb()
+        }
+    }, [])
+
     useMapEvents({
         click(e) {
             if (click === EClickType.addPolyline) {
@@ -61,9 +105,9 @@ export const Polylines = () => {
                 <Helmet title="Map App | Добавление точек на карту" />
             )}
 
-            <Row style={{ flexDirection: "column", gap: 5 }}>
+            <Row style={{ gap: 5 }}>
                 <Button
-                    icon={<RiseOutlined style={{ fontSize: 20 }} />}
+                    icon={<SignatureOutlined style={{ fontSize: 20 }} />}
                     onClick={() => {
                         if (click === EClickType.addPolyline) {
                             dispatch(setClickType(EClickType.null))
@@ -71,6 +115,7 @@ export const Polylines = () => {
                             setPolilynes((prev) => [
                                 ...prev.slice(0, prev.length - 1),
                             ])
+
                             message.info({
                                 content: "Построение маршрута завершено",
                                 duration: 1.5,
@@ -102,11 +147,11 @@ export const Polylines = () => {
                         <Button
                             danger
                             icon={<DeleteOutlined />}
-                            onClick={() =>
+                            onClick={() => {
                                 setPolilynes((prev) => [
                                     ...prev.slice(0, prev.length - 1),
                                 ])
-                            }
+                            }}
                         />
                     </Popconfirm>
                 )}
