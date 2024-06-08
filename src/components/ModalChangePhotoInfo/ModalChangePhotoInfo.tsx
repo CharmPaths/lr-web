@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Popover, Row } from "antd"
+import { Button,  Modal, Popover, Row } from "antd"
 import styles from "./ModalChangePhotoInfo.module.css"
 import TextArea from "antd/es/input/TextArea"
 import {
@@ -54,7 +54,8 @@ export const ModalChangePhotoInfo = () => {
             style={{ zIndex: 9999999 }}
         >
             <h6 className={styles.modalInputLabel}>Название фотографии</h6>
-            <Input
+            <TextArea
+                autoSize
                 value={modal.title}
                 onChange={(e) => dispatch(changeTitle(e.target.value))}
                 placeholder="Введите название для фотографии"
