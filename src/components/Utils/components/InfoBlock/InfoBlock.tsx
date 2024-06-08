@@ -21,7 +21,7 @@ export const InfoBlock = () => {
             content={
                 <div className={styles.contentWrapper}>
                     <ul className={styles.hotBtns}>
-                        {hotBtns.map((item) => (
+                        {hotBtns?.map((item) => (
                             <li key={item.name} className={styles.hotBtnItem}>
                                 <h4 className={styles.hotBtnTitle}>
                                     «{item.name}»

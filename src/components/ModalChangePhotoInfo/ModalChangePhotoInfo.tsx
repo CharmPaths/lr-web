@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Popover, Row } from "antd"
+import { Button,  Modal, Popover, Row } from "antd"
 import styles from "./ModalChangePhotoInfo.module.css"
 import TextArea from "antd/es/input/TextArea"
 import {
@@ -13,7 +13,6 @@ import {
     closeModal,
     resetModal,
 } from "../../redux/slices/modalToChangePhotoInfo"
-import { photoActions } from "../../redux/slices/photos"
 import { closeDrawer } from "../../redux/slices/drawerPhoto."
 import {
     activePhotoSelector,
@@ -22,11 +21,25 @@ import {
 import { setClickType } from "../../redux/slices/click"
 import { EClickType } from "../../types/types"
 import { Divider } from "antd/lib"
+import { usePhotos } from "../../hooks/usePhotos.hook"
 
 export const ModalChangePhotoInfo = () => {
     const id = useAppSelector(activePhotoSelector)
     const modal = useAppSelector((state) => state.modalToChangePhotoInfo)
     const dispatch = useAppDispatch()
+    const { changePhotoInfo, deletePhoto } = usePhotos()
+
+    const handlePutPoint = () => {
+        dispatch(closeDrawer())
+        dispatch(closeModal())
+        dispatch(setClickType(EClickType.changeLocation))
+    }
+
+    const handleDelete = () => {
+        deletePhoto(id)
+        dispatch(resetModal())
+        dispatch(resetActivePhoto())
+    }
 
     return (
         <Modal
@@ -41,7 +54,8 @@ export const ModalChangePhotoInfo = () => {
             style={{ zIndex: 9999999 }}
         >
             <h6 className={styles.modalInputLabel}>Название фотографии</h6>
-            <Input
+            <TextArea
+                autoSize
                 value={modal.title}
                 onChange={(e) => dispatch(changeTitle(e.target.value))}
                 placeholder="Введите название для фотографии"
@@ -75,11 +89,7 @@ export const ModalChangePhotoInfo = () => {
                         type="dashed"
                         icon={<PushpinOutlined />}
                         className={styles.btn}
-                        onClick={() => {
-                            dispatch(closeDrawer())
-                            dispatch(closeModal())
-                            dispatch(setClickType(EClickType.changeLocation))
-                        }}
+                        onClick={() => handlePutPoint()}
                     >
                         Указать точку на карте
                     </Button>
@@ -91,25 +101,19 @@ export const ModalChangePhotoInfo = () => {
                     danger
                     ghost
                     icon={<DeleteOutlined />}
-                    onClick={() => {
-                        dispatch(photoActions.deletePhoto(id))
-                        dispatch(resetModal())
-                        dispatch(resetActivePhoto())
-                    }}
+                    onClick={() => handleDelete()}
                 />
                 <div className={styles.modalFooterRight}>
                     <Button
                         type="primary"
                         onClick={() => {
-                            dispatch(
-                                photoActions.changePhotoInfo({
-                                    id: id,
-                                    changes: {
-                                        title: modal.title,
-                                        description: modal.description,
-                                    },
-                                })
-                            )
+                            changePhotoInfo({
+                                id: id,
+                                changes: {
+                                    title: modal.title,
+                                    description: modal.description,
+                                },
+                            })
                             dispatch(resetModal())
                         }}
                     >

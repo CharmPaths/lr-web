@@ -4,11 +4,15 @@ import { drawerPhotoSlice } from "./slices/drawerPhoto."
 import { modalToChangePhotoInfoSlice } from "./slices/modalToChangePhotoInfo"
 import { activePhotoSlice } from "./slices/activePhoto"
 import { clickSlice } from "./slices/click"
+import { routesSlice } from "./slices/routes"
+import { polylinesSlice } from "./slices/polylines"
 
 export const store = configureStore({
     reducer: {
         [clickSlice.name]: clickSlice.reducer,
         [photosSlice.name]: photosSlice.reducer,
+        [routesSlice.name]: routesSlice.reducer,
+        [polylinesSlice.name]: polylinesSlice.reducer,
         [drawerPhotoSlice.name]: drawerPhotoSlice.reducer,
         [modalToChangePhotoInfoSlice.name]: modalToChangePhotoInfoSlice.reducer,
         [activePhotoSlice.name]: activePhotoSlice.reducer,
