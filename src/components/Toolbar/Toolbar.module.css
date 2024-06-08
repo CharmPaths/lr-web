@@ -1,0 +1,16 @@
+.deleteBtn {
+    border-radius: 6px 0 0 6px;
+}
+
+.routeBtn {
+    color: #000;
+}
+
+.routeBtnActive {
+    color: #4096ff;
+    border-color: #4096ff;
+}
+
+.routeBtnHasRoutes {
+    border-radius: 0 6px 6px 0;
+}

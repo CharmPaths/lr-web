@@ -13,7 +13,7 @@ interface IMarkerProps {
     photo: IPhoto
 }
 
-export const Marker = ({ photo }: IMarkerProps): JSX.Element => {
+export const Marker = ({ photo }: IMarkerProps) => {
     const { images } = useFiles()
     const markerRef = useRef(null)
     const dispatch = useAppDispatch()

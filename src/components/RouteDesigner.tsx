@@ -4,7 +4,7 @@ import GpxParser from "gpxparser"
 import { gpxData } from "../mock/gpxData/gpx"
 import { Polyline } from "react-leaflet"
 
-export const RouteDesigner = (): JSX.Element => {
+export const RouteDesigner = () => {
     const gpx = new GpxParser()
     gpx.parse(gpxData)
     // здесь выводятся координаты, считанные с gpx файла

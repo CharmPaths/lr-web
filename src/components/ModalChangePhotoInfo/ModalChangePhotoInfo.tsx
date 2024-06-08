@@ -23,11 +23,23 @@ import { EClickType } from "../../types/types"
 import { Divider } from "antd/lib"
 import { usePhotos } from "../../hooks/usePhotos.hook"
 
-export const ModalChangePhotoInfo = (): JSX.Element => {
+export const ModalChangePhotoInfo = () => {
     const id = useAppSelector(activePhotoSelector)
     const modal = useAppSelector((state) => state.modalToChangePhotoInfo)
     const dispatch = useAppDispatch()
     const { changePhotoInfo, deletePhoto } = usePhotos()
+
+    const handlePutPoint = () => {
+        dispatch(closeDrawer())
+        dispatch(closeModal())
+        dispatch(setClickType(EClickType.changeLocation))
+    }
+
+    const handleDelete = () => {
+        deletePhoto(id)
+        dispatch(resetModal())
+        dispatch(resetActivePhoto())
+    }
 
     return (
         <Modal
@@ -76,11 +88,7 @@ export const ModalChangePhotoInfo = (): JSX.Element => {
                         type="dashed"
                         icon={<PushpinOutlined />}
                         className={styles.btn}
-                        onClick={() => {
-                            dispatch(closeDrawer())
-                            dispatch(closeModal())
-                            dispatch(setClickType(EClickType.changeLocation))
-                        }}
+                        onClick={() => handlePutPoint()}
                     >
                         Указать точку на карте
                     </Button>
@@ -92,11 +100,7 @@ export const ModalChangePhotoInfo = (): JSX.Element => {
                     danger
                     ghost
                     icon={<DeleteOutlined />}
-                    onClick={() => {
-                        deletePhoto(id)
-                        dispatch(resetModal())
-                        dispatch(resetActivePhoto())
-                    }}
+                    onClick={() => handleDelete()}
                 />
                 <div className={styles.modalFooterRight}>
                     <Button

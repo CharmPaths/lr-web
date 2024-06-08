@@ -13,7 +13,7 @@ import { setActivePhoto } from "../../redux/slices/activePhoto"
 import { message } from "antd/lib"
 import { usePhotos } from "../../hooks/usePhotos.hook"
 
-export const UploadButton = (): JSX.Element => {
+export const UploadButton = () => {
     const { notification } = App.useApp()
     const { addImage } = useFiles()
     const dispatch = useAppDispatch()

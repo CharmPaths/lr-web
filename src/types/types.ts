@@ -26,6 +26,13 @@ export interface IPhoto {
     timeStamp: number // Дата создания объекта данных
 }
 
+export interface IPolyline {
+    id: number | string
+    lat: number
+    lng: number
+    timeStamp: number 
+}
+
 export interface IImages {
     id: string
     fileSrc: string

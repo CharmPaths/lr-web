@@ -2,7 +2,7 @@ import { Button, Popover } from "antd"
 import { InfoCircleOutlined } from "@ant-design/icons"
 import styles from "./InfoBlock.module.css"
 
-export const InfoBlock = (): JSX.Element => {
+export const InfoBlock = () => {
     const hotBtns = [
         {
             name: "Home",

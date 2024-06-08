@@ -34,14 +34,14 @@ export const useRoutes = () => {
 
     // Инициализируем и описываем функцию для удаления
     // всего маршрута в Redux-toolkit и в indexDB
-    const deleteRoute = () => {
+    const deleteRoutes = () => {
         // Удаление всего маршрута из Redux-toolkit
         dispatch(routesActions.deleteRoutes())
 
         // Удаление всего маршрута из indexDB
         const deleteRoutesInDb = async () => {
             try {
-                await db.routes.bulkUpdate([])
+                await db.routes.clear()
             } catch (e) {
                 console.error(e)
             }
@@ -54,6 +54,6 @@ export const useRoutes = () => {
     // в одном объекте для удобного использования
     return {
         addRoute,
-        deleteRoute,
+        deleteRoutes,
     }
 }

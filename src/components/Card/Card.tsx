@@ -12,7 +12,7 @@ type CardProps = IPhoto & {
     imageSrc: string
 }
 
-export const Card = ({ imageSrc, ...polyline }: CardProps): JSX.Element => {
+export const Card = ({ imageSrc, ...polyline }: CardProps) => {
     const dispatch = useAppDispatch()
     const { id, title, description, latitude, longitude } = polyline
 

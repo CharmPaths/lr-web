@@ -11,7 +11,7 @@ import { clickType, setClickType } from "../../redux/slices/click"
 import { EClickType } from "../../types/types"
 import { Marker } from "./Marker/Marker"
 
-export const ImageTags = (): JSX.Element => {
+export const ImageTags = () => {
     const photos = useAppSelector(photosSelector)
     const id = useAppSelector(activePhotoSelector)
     const click = useAppSelector(clickType)

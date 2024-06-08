@@ -1,12 +1,7 @@
 import Dexie, { Table } from "dexie"
-import { IImages, IPhoto, IStatus } from "../types/types"
+import { IImages, IPhoto, IPolyline, IStatus } from "../types/types"
 import {} from "leaflet"
 
-interface ITablePolylines {
-    id: number
-    lat: number
-    lng: number
-}
 
 interface ITAbleRoutes {
     id: number | string
@@ -19,7 +14,7 @@ export class MapAppDbClass extends Dexie {
     photos!: Table<IPhoto>
     images!: Table<IImages>
     statuses!: Table<IStatus>
-    polylines!: Table<ITablePolylines>
+    polylines!: Table<IPolyline>
     routes!: Table<ITAbleRoutes>
 
     constructor() {
