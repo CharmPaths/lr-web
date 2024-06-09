@@ -1,10 +1,11 @@
 import styles from "./Card.module.css"
 import { IPhoto } from "../../types/types"
 import { Button, Col, Row, Skeleton, Typography } from "antd"
-import { EditOutlined } from "@ant-design/icons"
+import { EditOutlined, EyeOutlined } from "@ant-design/icons"
 import { openModal } from "../../redux/slices/modalToChangePhotoInfo"
 import { setActivePhoto } from "../../redux/slices/activePhoto"
 import { useAppDispatch } from "../../redux/hooks"
+import { Image } from "antd/lib"
 
 const { Paragraph, Title } = Typography
 
@@ -21,10 +22,13 @@ export const Card = ({ imageSrc, ...polyline }: CardProps) => {
             <Row>
                 <div className={styles.imageWrapper}>
                     {imageSrc ? (
-                        <img
+                        <Image
                             src={imageSrc}
                             alt={title}
                             className={styles.image}
+                            title="Посмотреть"
+                            placeholder="Посмотреть"
+                            preview={{mask: <span><EyeOutlined /> Посмотреть</span>}}
                         />
                     ) : (
                         <Skeleton.Button

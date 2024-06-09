@@ -43,6 +43,7 @@ export const Marker = ({ photo }: IMarkerProps) => {
     )
 
     return (
+        photo.latitude && photo.longitude ?
         <MarkerLeaflet
             key={photo?.id}
             position={{
@@ -79,6 +80,6 @@ export const Marker = ({ photo }: IMarkerProps) => {
                     {photo.description && photo.description}
                 </Paragraph>
             </Popup>
-        </MarkerLeaflet>
+        </MarkerLeaflet> : null
     )
 }

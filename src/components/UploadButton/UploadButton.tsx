@@ -1,4 +1,4 @@
-import { App, Button, Upload } from "antd"
+import { Button, Upload } from "antd"
 import { UploadOutlined } from "@ant-design/icons"
 import exif from "exifr"
 import styles from "./UploadButton.module.css"
@@ -14,7 +14,6 @@ import { message } from "antd/lib"
 import { usePhotos } from "../../hooks/usePhotos.hook"
 
 export const UploadButton = () => {
-    const { notification } = App.useApp()
     const { addImage } = useFiles()
     const dispatch = useAppDispatch()
     // Берем функцию для добавления фотографии
@@ -23,12 +22,13 @@ export const UploadButton = () => {
     // Описываем функцию для загрузки фотографии с устройства в приложение
     const onFileChange: UploadProps<File>["beforeUpload"] = async (photo) => {
         const data = await exif.gps(photo)
-        if (!data || !data.latitude || !data.longitude) {
-            notification.warning({
-                message: "В загруженной фотографии нет координат",
+
+        if (!data || !data?.latitude || !data?.longitude) {
+            message.warning({
+                content: "В загруженной фотографии нет координат",
             })
-            return false
         }
+
         const id = uuidv4()
 
         const fileReader = new FileReader()
@@ -44,8 +44,8 @@ export const UploadButton = () => {
             id: id,
             title: "",
             description: "",
-            latitude: data.latitude,
-            longitude: data.longitude,
+            latitude: data?.latitude ?? null,
+            longitude: data?.longitude ?? null,
             status: EStatus.success,
             viewed: false,
             altitude: 0,

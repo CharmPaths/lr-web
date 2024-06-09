@@ -31,7 +31,7 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
         try {
             await db.images.toArray().then((res) => {
                 res.forEach((img) => {
-                    setImages({ [img.id]: img.fileSrc })
+                    setImages((prev) => ({...prev, [img.id]: img.fileSrc }))
                 })
             })
         } catch (e) {
