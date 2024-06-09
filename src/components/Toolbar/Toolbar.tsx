@@ -18,10 +18,10 @@ export const Toolbar = () => {
     const dispatch = useAppDispatch()
     const photos = useAppSelector(photosSelector)
     const routes = useAppSelector(routesSelector)
+    const click = useAppSelector(clickType)
 
     const { viewAllPhotos } = usePhotos()
     const { deleteRoutes } = useRoutes()
-    const click = useAppSelector(clickType)
 
     const handleRouteBtn = () => {
         if (click === EClickType.addRoute) {
@@ -42,6 +42,16 @@ export const Toolbar = () => {
         }
     }
 
+    const handleDeleteRoute = () => {
+        deleteRoutes()
+        dispatch(setClickType(EClickType.null))
+    }
+
+    const handleViewAllPhotos = () => {
+        viewAllPhotos()
+        dispatch(openDrawer())
+    }
+      
     return (
         <Footer>
             <Row>
@@ -50,10 +60,7 @@ export const Toolbar = () => {
                         title="Удалить маршрут?" 
                         okText="Да"
                         cancelText='Нет'
-                        onConfirm={() => {
-                            deleteRoutes()
-                            dispatch(setClickType(EClickType.null))
-                        }}
+                        onConfirm={handleDeleteRoute}
                     >
                         <Button
                             danger
@@ -64,7 +71,7 @@ export const Toolbar = () => {
                 }
                 <Button
                     icon={<RiseOutlined />}
-                    onClick={() => handleRouteBtn()}
+                    onClick={handleRouteBtn}
                     className={cl(styles.routeBtn, {
                         [styles.routeBtnActive]: click === EClickType.addRoute,
                         [styles.routeBtnHasRoutes]: routes?.length > 0
@@ -80,10 +87,7 @@ export const Toolbar = () => {
             >
                 <Button
                     icon={<PictureOutlined />}
-                    onClick={() => {
-                        viewAllPhotos()
-                        dispatch(openDrawer())
-                    }}
+                    onClick={handleViewAllPhotos}
                 />
             </Badge>
         </Footer>

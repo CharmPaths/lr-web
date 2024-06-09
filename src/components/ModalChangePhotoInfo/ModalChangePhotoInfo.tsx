@@ -89,7 +89,7 @@ export const ModalChangePhotoInfo = () => {
                         type="dashed"
                         icon={<PushpinOutlined />}
                         className={styles.btn}
-                        onClick={() => handlePutPoint()}
+                        onClick={handlePutPoint}
                     >
                         Указать точку на карте
                     </Button>
@@ -101,7 +101,7 @@ export const ModalChangePhotoInfo = () => {
                     danger
                     ghost
                     icon={<DeleteOutlined />}
-                    onClick={() => handleDelete()}
+                    onClick={handleDelete}
                 />
                 <div className={styles.modalFooterRight}>
                     <Button

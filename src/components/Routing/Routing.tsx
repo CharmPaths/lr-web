@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import L, { LatLng } from "leaflet"
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css"
 import "leaflet-routing-machine"
@@ -16,7 +16,27 @@ L.Marker.prototype.options.icon = L.icon({
     iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
 })
 
-export const Routing = (): null => {
+const getRoutingControl = (length: number) => L.Routing.control({
+    waypoints: [],
+    routeWhileDragging: true,
+    lineOptions: {
+        extendToWaypoints: true,
+        missingRouteTolerance: 1,
+        styles: [{ color: "#6FA1EC", weight: 4 }],
+    },
+    // routeLine(route, options) {
+    //     console.log(route);
+    // },
+    containerClassName: cl({
+        [styles.displayNone]: length < 2
+    }),
+    show: true,
+    showAlternatives: true,
+    addWaypoints: true,
+    fitSelectedRoutes: true,
+})
+
+export const Routing = () => {
     const routes = useAppSelector(routesSelector)
     const map = useMap()
     const click = useAppSelector(clickType)
@@ -36,7 +56,7 @@ export const Routing = (): null => {
                     id: Math.random(),
                     lat: e.latlng.lat,
                     lng: e.latlng.lng,
-                    timeStamp: new Date().getTime()
+                    timeStamp: Date.now()
                 })
 
                 // const getDistance = (
@@ -65,25 +85,7 @@ export const Routing = (): null => {
         },
     })
 
-    const routingControl = L.Routing.control({
-        waypoints: [],
-        routeWhileDragging: true,
-        lineOptions: {
-            extendToWaypoints: true,
-            missingRouteTolerance: 1,
-            styles: [{ color: "#6FA1EC", weight: 4 }],
-        },
-        // routeLine(route, options) {
-        //     console.log(route);
-        // },
-        containerClassName: cl({
-            [styles.displayNone]: routes?.length < 2
-        }),
-        show: true,
-        showAlternatives: true,
-        addWaypoints: true,
-        fitSelectedRoutes: true,
-    })
+    const routingControl = useMemo(() => getRoutingControl(routes?.length), [routes?.length])
 
     useEffect(() => {
         if (!map) return

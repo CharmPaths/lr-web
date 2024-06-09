@@ -16,8 +16,8 @@ export interface IPhoto {
     description: string | undefined
     status: EStatus
     viewed: boolean
-    latitude: number // Широта
-    longitude: number // Долгота
+    latitude: number | null // Широта
+    longitude: number | null // Долгота
     altitude: number | undefined // Высота
     accuracy: number | null // Точность (погрешность координат?)
     altitudeAccuracy: number | null // Точность определения высоты (погрешность высоты?)
