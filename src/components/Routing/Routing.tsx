@@ -16,7 +16,6 @@ L.Marker.prototype.options.icon = L.icon({
     iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
 })
 
-
 const getRoutingControl = (length: number) => L.Routing.control({
     waypoints: [],
     routeWhileDragging: true,

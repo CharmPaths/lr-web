@@ -51,7 +51,7 @@ export const Toolbar = () => {
         viewAllPhotos()
         dispatch(openDrawer())
     }
-
+      
     return (
         <Footer>
             <Row>
