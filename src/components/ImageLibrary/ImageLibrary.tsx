@@ -1,16 +1,18 @@
-import { Button, Drawer, Input, Popover, Row } from "antd"
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons"
-import { Card } from "@/components/Card/Card"
-import styles from "./ImageLibrary.module.css"
-import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { photosSelector } from "@/redux/slices/photos"
-import { closeDrawer } from "@/redux/slices/drawerPhoto."
-import { drawerSelector } from "@/redux/selectors"
-import { useFiles } from "@/context/FileContext"
-import { resetActivePhoto } from "@/redux/slices/activePhoto"
-import { Helmet } from "react-helmet"
+import { Button, Drawer, Input, Popover, Row } from "antd"
 import { useEffect, useState } from "react"
-import { IPhoto } from "@/types/types"
+import { Helmet } from "react-helmet"
+
+import { Card } from "components/Card/Card"
+import { useFiles } from "context/FileContext"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { drawerSelector } from "store/selectors"
+import { resetActivePhoto } from "store/slices/activePhoto"
+import { closeDrawer } from "store/slices/drawerPhoto."
+import { photosSelector } from "store/slices/photos"
+import { IPhoto } from "utils/types"
+
+import styles from "./ImageLibrary.module.css"
 
 export const ImageLibrary = () => {
     const photos = useAppSelector(photosSelector)

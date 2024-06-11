@@ -1,11 +1,11 @@
 import { useEffect } from "react"
 
-import { initStatuses } from "@/constants"
-import { db } from "@/database/db"
-import { useAppDispatch } from "@/redux/hooks"
-import { photoActions } from "@/redux/slices/photos"
-import { polylineActions } from "@/redux/slices/polylines"
-import { routesActions } from "@/redux/slices/routes"
+import { db } from "database/db"
+import { useAppDispatch } from "store/hooks"
+import { photoActions } from "store/slices/photos"
+import { polylineActions } from "store/slices/polylines"
+import { routesActions } from "store/slices/routes"
+import { initStatuses } from "utils/constants"
 
 export function useDataBaseInitialStatuses() {
     const dispatch = useAppDispatch()

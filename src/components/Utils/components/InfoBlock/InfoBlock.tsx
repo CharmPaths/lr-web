@@ -1,5 +1,6 @@
-import { Button, Popover } from "antd"
 import { InfoCircleOutlined } from "@ant-design/icons"
+import { Button, Popover } from "antd"
+
 import styles from "./InfoBlock.module.css"
 
 export const InfoBlock = () => {

@@ -1,28 +1,27 @@
-import { Button,  Modal, Popover, Row } from "antd"
-import styles from "./ModalChangePhotoInfo.module.css"
-import TextArea from "antd/es/input/TextArea"
 import {
     DeleteOutlined,
     ExclamationCircleOutlined,
     PushpinOutlined,
 } from "@ant-design/icons"
-import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { Button, Modal, Popover, Row } from "antd"
+import TextArea from "antd/es/input/TextArea"
+import { Divider } from "antd/lib"
+
+import { usePhotos } from "hooks/usePhotos"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { activePhotoSelector, resetActivePhoto } from "store/slices/activePhoto"
+import { setClickType } from "store/slices/click"
+import { closeDrawer } from "store/slices/drawerPhoto."
 import {
     changeDescription,
     changeTitle,
     closeModal,
     modalToChangePhotoInfoSelector,
     resetModal,
-} from "@/redux/slices/modalToChangePhotoInfo"
-import { closeDrawer } from "@/redux/slices/drawerPhoto."
-import {
-    activePhotoSelector,
-    resetActivePhoto,
-} from "@/redux/slices/activePhoto"
-import { setClickType } from "@/redux/slices/click"
-import { EClickType } from "@/types/types"
-import { Divider } from "antd/lib"
-import { usePhotos } from "@/hooks/usePhotos.hook"
+} from "store/slices/modalToChangePhotoInfo"
+import { EClickType } from "utils/types"
+
+import styles from "./ModalChangePhotoInfo.module.css"
 
 export const ModalChangePhotoInfo = () => {
     const id = useAppSelector(activePhotoSelector)

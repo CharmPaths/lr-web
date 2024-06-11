@@ -1,14 +1,16 @@
-import { IPhoto } from "@/types/types"
-import Title from "antd/es/typography/Title"
-import styles from "../ImageTags.module.css"
 import Paragraph from "antd/es/typography/Paragraph"
-import { Mark } from "@/components/Mark/Mark"
-import { useFiles } from "@/context/FileContext"
-import { Popup, Marker as MarkerLeaflet } from "react-leaflet"
-import { useMemo, useRef } from "react"
-import { useAppDispatch } from "@/redux/hooks"
-import { photoActions } from "@/redux/slices/photos"
+import Title from "antd/es/typography/Title"
 import { Marker as MarkerRouting } from "leaflet"
+import { useMemo, useRef } from "react"
+import { Popup, Marker as MarkerLeaflet } from "react-leaflet"
+
+import { Mark } from "components/Mark/Mark"
+import { useFiles } from "context/FileContext"
+import { useAppDispatch } from "store/hooks"
+import { photoActions } from "store/slices/photos"
+import { IPhoto } from "utils/types"
+
+import styles from "../ImageTags.module.css"
 
 interface IMarkerProps {
     photo: IPhoto
@@ -41,8 +43,7 @@ export const Marker = ({ photo }: IMarkerProps) => {
         []
     )
 
-    return (
-        photo.latitude && photo.longitude ?
+    return photo.latitude && photo.longitude ? (
         <MarkerLeaflet
             key={photo?.id}
             position={{
@@ -79,6 +80,6 @@ export const Marker = ({ photo }: IMarkerProps) => {
                     {photo.description && photo.description}
                 </Paragraph>
             </Popup>
-        </MarkerLeaflet> : null
-    )
+        </MarkerLeaflet>
+    ) : null
 }

@@ -1,6 +1,6 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
 
-import { IPolyline } from "@/types/types"
+import { IPolyline } from "utils/types"
 
 import { RootState } from "../rootReducer"
 

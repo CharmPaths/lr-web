@@ -1,4 +1,4 @@
-import { EStatus } from "./types/types"
+import { EStatus } from "./types"
 
 export const initStatuses = [
     {

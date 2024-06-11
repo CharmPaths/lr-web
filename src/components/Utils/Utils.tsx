@@ -1,6 +1,6 @@
-import styles from "./Utils.module.css"
 import { InfoBlock } from "./components/InfoBlock/InfoBlock"
 import { PolylinesControlUnit } from "./components/PolylinesControlUnit/PolylinesControlUnit"
+import styles from "./Utils.module.css"
 
 export const Utils = () => {
     return (

@@ -1,17 +1,18 @@
-import { Button, Upload } from "antd"
 import { UploadOutlined } from "@ant-design/icons"
-import exif from "exifr"
-import styles from "./UploadButton.module.css"
-import { v4 as uuidv4 } from "uuid"
-import { useAppDispatch } from "@/redux/hooks"
-import { openModal } from "@/redux/slices/modalToChangePhotoInfo"
-
-import type { UploadProps } from "antd/lib/upload/interface"
-import { useFiles } from "@/context/FileContext"
-import { EStatus, IPhoto } from "@/types/types"
-import { setActivePhoto } from "@/redux/slices/activePhoto"
+import { Button, Upload } from "antd"
 import { message } from "antd/lib"
-import { usePhotos } from "@/hooks/usePhotos.hook"
+import type { UploadProps } from "antd/lib/upload/interface"
+import exif from "exifr"
+import { v4 as uuidv4 } from "uuid"
+
+import { useFiles } from "context/FileContext"
+import { usePhotos } from "hooks/usePhotos"
+import { useAppDispatch } from "store/hooks"
+import { setActivePhoto } from "store/slices/activePhoto"
+import { openModal } from "store/slices/modalToChangePhotoInfo"
+import { EStatus, IPhoto } from "utils/types"
+
+import styles from "./UploadButton.module.css"
 
 export const UploadButton = () => {
     const { addImage } = useFiles()

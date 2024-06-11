@@ -1,6 +1,6 @@
 import Dexie, { Table } from "dexie"
 
-import { IImages, IPhoto, IPolyline, IStatus } from "@/types/types"
+import { IImages, IPhoto, IPolyline, IStatus } from "utils/types"
 
 interface ITAbleRoutes {
     id: number | string

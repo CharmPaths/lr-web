@@ -1,13 +1,15 @@
+import { DeleteOutlined, SignatureOutlined } from "@ant-design/icons"
 import { Button, Popconfirm, Row, message } from "antd/lib"
-import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { clickType, setClickType } from "@/redux/slices/click"
-import { EClickType } from "@/types/types"
-import styles from "./PolylinesControlUnit.module.css"
 import cn from "classnames"
 import { Helmet } from "react-helmet"
-import { DeleteOutlined, SignatureOutlined } from "@ant-design/icons"
-import { polylinesSelector } from "@/redux/slices/polylines"
-import { usePolylines } from "@/hooks/usePolylines.hook"
+
+import { usePolylines } from "hooks/usePolylines"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { clickType, setClickType } from "store/slices/click"
+import { polylinesSelector } from "store/slices/polylines"
+import { EClickType } from "utils/types"
+
+import styles from "./PolylinesControlUnit.module.css"
 
 export const PolylinesControlUnit = () => {
     const polylines = useAppSelector(polylinesSelector)

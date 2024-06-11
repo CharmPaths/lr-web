@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
 
-import { IPhoto } from "@/types/types"
+import { IPhoto } from "utils/types"
 
 import { RootState } from "../rootReducer"
 

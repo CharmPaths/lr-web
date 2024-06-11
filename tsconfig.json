@@ -17,9 +17,7 @@
         "jsx": "react-jsx",
         "noErrorTruncation": true,
         "baseUrl": "src",
-        "paths": {
-            "@/*": ["*"]
-        }
+        "paths": {}
     },
     "include": ["src"]
 }

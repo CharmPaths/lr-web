@@ -1,5 +1,6 @@
 import { noop } from "antd/es/_util/warning"
 import { createContext, useContext, useEffect, useState } from "react"
+
 import { db } from "../database/db"
 
 export type ImageStore = {
@@ -31,7 +32,7 @@ export function FileProvider({ children }: { children: React.ReactNode }) {
         try {
             await db.images.toArray().then((res) => {
                 res.forEach((img) => {
-                    setImages((prev) => ({...prev, [img.id]: img.fileSrc }))
+                    setImages((prev) => ({ ...prev, [img.id]: img.fileSrc }))
                 })
             })
         } catch (e) {
