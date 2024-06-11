@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
-import { photosSlice } from "./slices/photos"
-import { drawerPhotoSlice } from "./slices/drawerPhoto."
-import { modalToChangePhotoInfoSlice } from "./slices/modalToChangePhotoInfo"
+
 import { activePhotoSlice } from "./slices/activePhoto"
 import { clickSlice } from "./slices/click"
-import { routesSlice } from "./slices/routes"
+import { drawerPhotoSlice } from "./slices/drawerPhoto."
+import { modalToChangePhotoInfoSlice } from "./slices/modalToChangePhotoInfo"
+import { photosSlice } from "./slices/photos"
 import { polylinesSlice } from "./slices/polylines"
+import { routesSlice } from "./slices/routes"
 
 export const store = configureStore({
     reducer: {

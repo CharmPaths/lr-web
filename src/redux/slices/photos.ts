@@ -1,5 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
-import { IPhoto } from "../../types/types"
+
+import { IPhoto } from "@/types/types"
+
 import { RootState } from "../rootReducer"
 
 const initialState: IPhoto[] = []

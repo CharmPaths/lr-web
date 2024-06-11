@@ -6,26 +6,27 @@ import {
     ExclamationCircleOutlined,
     PushpinOutlined,
 } from "@ant-design/icons"
-import { useAppDispatch, useAppSelector } from "../../redux/hooks"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import {
     changeDescription,
     changeTitle,
     closeModal,
+    modalToChangePhotoInfoSelector,
     resetModal,
-} from "../../redux/slices/modalToChangePhotoInfo"
-import { closeDrawer } from "../../redux/slices/drawerPhoto."
+} from "@/redux/slices/modalToChangePhotoInfo"
+import { closeDrawer } from "@/redux/slices/drawerPhoto."
 import {
     activePhotoSelector,
     resetActivePhoto,
-} from "../../redux/slices/activePhoto"
-import { setClickType } from "../../redux/slices/click"
-import { EClickType } from "../../types/types"
+} from "@/redux/slices/activePhoto"
+import { setClickType } from "@/redux/slices/click"
+import { EClickType } from "@/types/types"
 import { Divider } from "antd/lib"
-import { usePhotos } from "../../hooks/usePhotos.hook"
+import { usePhotos } from "@/hooks/usePhotos.hook"
 
 export const ModalChangePhotoInfo = () => {
     const id = useAppSelector(activePhotoSelector)
-    const modal = useAppSelector((state) => state.modalToChangePhotoInfo)
+    const modal = useAppSelector(modalToChangePhotoInfoSelector)
     const dispatch = useAppDispatch()
     const { changePhotoInfo, deletePhoto } = usePhotos()
 

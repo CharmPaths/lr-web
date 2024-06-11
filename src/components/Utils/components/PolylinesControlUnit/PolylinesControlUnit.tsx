@@ -1,24 +1,24 @@
 import { Button, Popconfirm, Row, message } from "antd/lib"
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks"
-import { clickType, setClickType } from "../../../../redux/slices/click"
-import { EClickType } from "../../../../types/types"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { clickType, setClickType } from "@/redux/slices/click"
+import { EClickType } from "@/types/types"
 import styles from "./PolylinesControlUnit.module.css"
 import cn from "classnames"
 import { Helmet } from "react-helmet"
 import { DeleteOutlined, SignatureOutlined } from "@ant-design/icons"
-import { polylinesSelector } from "../../../../redux/slices/polylines"
-import { usePolylines } from "../../../../hooks/usePolylines.hook"
+import { polylinesSelector } from "@/redux/slices/polylines"
+import { usePolylines } from "@/hooks/usePolylines.hook"
 
 export const PolylinesControlUnit = () => {
     const polylines = useAppSelector(polylinesSelector)
-    const {deletePolylines} = usePolylines()
+    const { deletePolylines } = usePolylines()
     const click = useAppSelector(clickType)
     const dispatch = useAppDispatch()
 
     const handlePolylineBtn = () => {
         if (click === EClickType.addPolyline) {
             dispatch(setClickType(EClickType.null))
-            
+
             message.info({
                 content: "Построение маршрута завершено",
                 duration: 1.5,
@@ -59,10 +59,7 @@ export const PolylinesControlUnit = () => {
                             deletePolylines()
                         }}
                     >
-                        <Button
-                            danger
-                            icon={<DeleteOutlined />}
-                        />
+                        <Button danger icon={<DeleteOutlined />} />
                     </Popconfirm>
                 )}
             </Row>

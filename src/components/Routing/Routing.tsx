@@ -3,12 +3,12 @@ import L, { LatLng } from "leaflet"
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css"
 import "leaflet-routing-machine"
 import { useMap, useMapEvents } from "react-leaflet"
-import {  useAppSelector } from "../../redux/hooks"
-import { routesSelector } from "../../redux/slices/routes"
-import { clickType } from "../../redux/slices/click"
-import { EClickType } from "../../types/types"
-import { useRoutes } from "../../hooks/useRoutes.hook"
-import { usePolylines } from "../../hooks/usePolylines.hook"
+import {  useAppSelector } from "@/redux/hooks"
+import { routesSelector } from "@/redux/slices/routes"
+import { clickType } from "@/redux/slices/click"
+import { EClickType } from "@/types/types"
+import { useRoutes } from "@/hooks/useRoutes.hook"
+import { usePolylines } from "@/hooks/usePolylines.hook"
 import cl from 'classnames'
 import styles from './Routing.module.css'
 

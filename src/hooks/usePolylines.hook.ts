@@ -1,7 +1,7 @@
-import { db } from "../database/db"
-import { useAppDispatch } from "../redux/hooks"
-import { polylineActions } from "../redux/slices/polylines"
-import { IPolyline } from "../types/types"
+import { db } from "@/database/db"
+import { useAppDispatch } from "@/redux/hooks"
+import { polylineActions } from "@/redux/slices/polylines"
+import { IPolyline } from "@/types/types"
 
 export const usePolylines = () => {
     const dispatch = useAppDispatch()

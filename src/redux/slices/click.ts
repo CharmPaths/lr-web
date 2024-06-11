@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
+
+import { EClickType } from "@/types/types"
+
 import { RootState } from "../rootReducer"
-import { EClickType } from "../../types/types"
 
 interface IInitState {
     clickType: EClickType

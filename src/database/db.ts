@@ -1,7 +1,6 @@
 import Dexie, { Table } from "dexie"
-import { IImages, IPhoto, IPolyline, IStatus } from "../types/types"
-import {} from "leaflet"
 
+import { IImages, IPhoto, IPolyline, IStatus } from "@/types/types"
 
 interface ITAbleRoutes {
     id: number | string

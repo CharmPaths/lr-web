@@ -2,17 +2,17 @@ import { UploadButton } from "../UploadButton/UploadButton"
 import { Footer } from "../Footer/Footer"
 import { Button, Row } from "antd"
 import { DeleteOutlined, PictureOutlined, RiseOutlined } from "@ant-design/icons"
-import { useAppDispatch, useAppSelector } from "../../redux/hooks"
-import { openDrawer } from "../../redux/slices/drawerPhoto."
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { openDrawer } from "@/redux/slices/drawerPhoto."
 import { Badge, Popconfirm, message } from "antd/lib"
-import { photosSelector } from "../../redux/slices/photos"
-import { usePhotos } from "../../hooks/usePhotos.hook"
-import { clickType, setClickType } from "../../redux/slices/click"
-import { EClickType } from "../../types/types"
+import { photosSelector } from "@/redux/slices/photos"
+import { usePhotos } from "@/hooks/usePhotos.hook"
+import { clickType, setClickType } from "@/redux/slices/click"
+import { EClickType } from "@/types/types"
 import styles from './Toolbar.module.css'
 import cl from 'classnames'
-import { routesSelector } from "../../redux/slices/routes"
-import { useRoutes } from "../../hooks/useRoutes.hook"
+import { routesSelector } from "@/redux/slices/routes"
+import { useRoutes } from "@/hooks/useRoutes.hook"
 
 export const Toolbar = () => {
     const dispatch = useAppDispatch()

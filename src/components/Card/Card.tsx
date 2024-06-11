@@ -1,10 +1,10 @@
 import styles from "./Card.module.css"
-import { IPhoto } from "../../types/types"
+import { IPhoto } from "@/types/types"
 import { Button, Col, Row, Skeleton, Typography } from "antd"
 import { EditOutlined, EyeOutlined } from "@ant-design/icons"
-import { openModal } from "../../redux/slices/modalToChangePhotoInfo"
-import { setActivePhoto } from "../../redux/slices/activePhoto"
-import { useAppDispatch } from "../../redux/hooks"
+import { openModal } from "@/redux/slices/modalToChangePhotoInfo"
+import { setActivePhoto } from "@/redux/slices/activePhoto"
+import { useAppDispatch } from "@/redux/hooks"
 import { Image } from "antd/lib"
 
 const { Paragraph, Title } = Typography

@@ -1,14 +1,14 @@
-import { useAppDispatch, useAppSelector } from "../../redux/hooks"
-import { photoActions, photosSelector } from "../../redux/slices/photos"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { photoActions, photosSelector } from "@/redux/slices/photos"
 import MarkerClusterGroup from "react-leaflet-cluster"
 import { useMapEvents } from "react-leaflet"
 import {
     activePhotoSelector,
     resetActivePhoto,
-} from "../../redux/slices/activePhoto"
-import { openDrawer } from "../../redux/slices/drawerPhoto."
-import { clickType, setClickType } from "../../redux/slices/click"
-import { EClickType } from "../../types/types"
+} from "@/redux/slices/activePhoto"
+import { openDrawer } from "@/redux/slices/drawerPhoto."
+import { clickType, setClickType } from "@/redux/slices/click"
+import { EClickType } from "@/types/types"
 import { Marker } from "./Marker/Marker"
 
 export const ImageTags = () => {

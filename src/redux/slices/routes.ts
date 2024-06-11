@@ -1,5 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
-import { IRoute } from "../../types/types"
+
+import { IRoute } from "@/types/types"
+
 import { RootState } from "../rootReducer"
 
 const initialState: IRoute[] = []

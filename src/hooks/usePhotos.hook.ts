@@ -1,7 +1,7 @@
-import { db } from "../database/db"
-import { useAppDispatch } from "../redux/hooks"
-import { photoActions } from "../redux/slices/photos"
-import { IPhoto } from "../types/types"
+import { db } from "@/database/db"
+import { useAppDispatch } from "@/redux/hooks"
+import { photoActions } from "@/redux/slices/photos"
+import { IPhoto } from "@/types/types"
 
 // usePhotos - хук (функция), внутри которой описываем все функции для работы
 // с фотографиями:
