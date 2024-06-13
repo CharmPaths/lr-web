@@ -1,10 +1,11 @@
-import { db } from "../database/db"
 import { useEffect } from "react"
-import { initStatuses } from "../constants"
-import { useAppDispatch } from "../redux/hooks"
-import { photoActions } from "../redux/slices/photos"
-import { routesActions } from "../redux/slices/routes"
-import { polylineActions } from "../redux/slices/polylines"
+
+import { db } from "database/db"
+import { useAppDispatch } from "store/hooks"
+import { photoActions } from "store/slices/photos"
+import { polylineActions } from "store/slices/polylines"
+import { routesActions } from "store/slices/routes"
+import { initStatuses } from "utils/constants"
 
 export function useDataBaseInitialStatuses() {
     const dispatch = useAppDispatch()
@@ -28,20 +29,20 @@ export function useDataBaseInitialStatuses() {
                     })
 
                 res.table("routes")
-                .toArray()
-                .then((r) => {
-                    if (r?.length > 0) {
-                        dispatch(routesActions.initRoutes(r))
-                    }
-                })
+                    .toArray()
+                    .then((r) => {
+                        if (r?.length > 0) {
+                            dispatch(routesActions.initRoutes(r))
+                        }
+                    })
 
                 res.table("polylines")
-                .toArray()
-                .then((r) => {
-                    if (r?.length > 0) {
-                        dispatch(polylineActions.initPolylines(r))
-                    }
-                })
+                    .toArray()
+                    .then((r) => {
+                        if (r?.length > 0) {
+                            dispatch(polylineActions.initPolylines(r))
+                        }
+                    })
             })
         }
 

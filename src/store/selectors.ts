@@ -1,5 +1,6 @@
-import { createSelector } from '@reduxjs/toolkit'
-import { RootState } from './rootReducer'
+import { createSelector } from "@reduxjs/toolkit"
+
+import { RootState } from "./rootReducer"
 
 export const drawerSelector = createSelector(
     (state: RootState) => state.drawerPhoto.isOpen,

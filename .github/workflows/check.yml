@@ -21,6 +21,6 @@ jobs:
         with:
           node-version: '18.18.2'
       - run: npm ci
-      - run: npm run type-check
       - run: npm run lint
+      - run: npm run typecheck
       - run: npm run build

@@ -1,7 +1,7 @@
-import { db } from "../database/db"
-import { useAppDispatch } from "../redux/hooks"
-import { routesActions } from "../redux/slices/routes"
-import { IRoute } from "../types/types"
+import { db } from "database/db"
+import { useAppDispatch } from "store/hooks"
+import { routesActions } from "store/slices/routes"
+import { IRoute } from "utils/types"
 
 // useRoutes - хук (функция), внутри которой описываем все функции для работы
 // с маршрутом:

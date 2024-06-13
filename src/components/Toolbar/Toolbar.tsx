@@ -1,18 +1,25 @@
-import { UploadButton } from "../UploadButton/UploadButton"
-import { Footer } from "../Footer/Footer"
+import {
+    DeleteOutlined,
+    PictureOutlined,
+    RiseOutlined,
+} from "@ant-design/icons"
 import { Button, Row } from "antd"
-import { DeleteOutlined, PictureOutlined, RiseOutlined } from "@ant-design/icons"
-import { useAppDispatch, useAppSelector } from "../../redux/hooks"
-import { openDrawer } from "../../redux/slices/drawerPhoto."
 import { Badge, Popconfirm, message } from "antd/lib"
-import { photosSelector } from "../../redux/slices/photos"
-import { usePhotos } from "../../hooks/usePhotos.hook"
-import { clickType, setClickType } from "../../redux/slices/click"
-import { EClickType } from "../../types/types"
-import styles from './Toolbar.module.css'
-import cl from 'classnames'
-import { routesSelector } from "../../redux/slices/routes"
-import { useRoutes } from "../../hooks/useRoutes.hook"
+import cl from "classnames"
+
+import { usePhotos } from "hooks/usePhotos"
+import { useRoutes } from "hooks/useRoutes"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { clickType, setClickType } from "store/slices/click"
+import { openDrawer } from "store/slices/drawerPhoto."
+import { photosSelector } from "store/slices/photos"
+import { routesSelector } from "store/slices/routes"
+import { EClickType } from "utils/types"
+
+import { Footer } from "../Footer/Footer"
+import { UploadButton } from "../UploadButton/UploadButton"
+
+import styles from "./Toolbar.module.css"
 
 export const Toolbar = () => {
     const dispatch = useAppDispatch()
@@ -51,15 +58,15 @@ export const Toolbar = () => {
         viewAllPhotos()
         dispatch(openDrawer())
     }
-      
+
     return (
         <Footer>
             <Row>
-                {routes?.length > 0 && 
-                   <Popconfirm 
-                        title="Удалить маршрут?" 
+                {routes?.length > 0 && (
+                    <Popconfirm
+                        title="Удалить маршрут?"
                         okText="Да"
-                        cancelText='Нет'
+                        cancelText="Нет"
                         onConfirm={handleDeleteRoute}
                     >
                         <Button
@@ -67,14 +74,14 @@ export const Toolbar = () => {
                             icon={<DeleteOutlined />}
                             className={styles.deleteBtn}
                         />
-                   </Popconfirm>
-                }
+                    </Popconfirm>
+                )}
                 <Button
                     icon={<RiseOutlined />}
                     onClick={handleRouteBtn}
                     className={cl(styles.routeBtn, {
                         [styles.routeBtnActive]: click === EClickType.addRoute,
-                        [styles.routeBtnHasRoutes]: routes?.length > 0
+                        [styles.routeBtnHasRoutes]: routes?.length > 0,
                     })}
                 />
             </Row>

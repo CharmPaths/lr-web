@@ -1,7 +1,8 @@
+import { notification } from "antd/lib"
 import { useMemo, useRef, useState } from "react"
 import { Marker, Popup, useMapEvents } from "react-leaflet"
-import { Mark } from "../Mark/Mark"
-import { notification } from "antd/lib"
+
+import { Mark } from "./Mark/Mark"
 
 export const LocationMarker = () => {
     const [position, setPosition] = useState<{

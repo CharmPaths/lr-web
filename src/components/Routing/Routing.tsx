@@ -1,40 +1,43 @@
-import { useEffect, useMemo } from "react"
+import cl from "classnames"
 import L, { LatLng } from "leaflet"
+import { useEffect, useMemo } from "react"
+import { useMap, useMapEvents } from "react-leaflet"
+
+import { usePolylines } from "hooks/usePolylines"
+import { useRoutes } from "hooks/useRoutes"
+import { useAppSelector } from "store/hooks"
+import { clickType } from "store/slices/click"
+import { routesSelector } from "store/slices/routes"
+import { EClickType } from "utils/types"
+
+import styles from "./Routing.module.css"
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css"
 import "leaflet-routing-machine"
-import { useMap, useMapEvents } from "react-leaflet"
-import {  useAppSelector } from "../../redux/hooks"
-import { routesSelector } from "../../redux/slices/routes"
-import { clickType } from "../../redux/slices/click"
-import { EClickType } from "../../types/types"
-import { useRoutes } from "../../hooks/useRoutes.hook"
-import { usePolylines } from "../../hooks/usePolylines.hook"
-import cl from 'classnames'
-import styles from './Routing.module.css'
 
 L.Marker.prototype.options.icon = L.icon({
     iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
 })
 
-const getRoutingControl = (length: number) => L.Routing.control({
-    waypoints: [],
-    routeWhileDragging: true,
-    lineOptions: {
-        extendToWaypoints: true,
-        missingRouteTolerance: 1,
-        styles: [{ color: "#6FA1EC", weight: 4 }],
-    },
-    // routeLine(route, options) {
-    //     console.log(route);
-    // },
-    containerClassName: cl({
-        [styles.displayNone]: length < 2
-    }),
-    show: true,
-    showAlternatives: true,
-    addWaypoints: true,
-    fitSelectedRoutes: true,
-})
+const getRoutingControl = (length: number) =>
+    L.Routing.control({
+        waypoints: [],
+        routeWhileDragging: true,
+        lineOptions: {
+            extendToWaypoints: true,
+            missingRouteTolerance: 1,
+            styles: [{ color: "#6FA1EC", weight: 4 }],
+        },
+        // routeLine(route, options) {
+        //     console.log(route);
+        // },
+        containerClassName: cl({
+            [styles.displayNone]: length < 2,
+        }),
+        show: true,
+        showAlternatives: true,
+        addWaypoints: true,
+        fitSelectedRoutes: true,
+    })
 
 export const Routing = () => {
     const routes = useAppSelector(routesSelector)
@@ -56,7 +59,7 @@ export const Routing = () => {
                     id: Math.random(),
                     lat: e.latlng.lat,
                     lng: e.latlng.lng,
-                    timeStamp: Date.now()
+                    timeStamp: Date.now(),
                 })
 
                 // const getDistance = (
@@ -68,7 +71,7 @@ export const Routing = () => {
                 //     const R = 6371 // Радиус Земли в километрах
                 //     const dLat = ((lat2 - lat1) * Math.PI) / 180
                 //     const dLon = ((lon2 - lon1) * Math.PI) / 180
-            
+
                 //     const a =
                 //         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                 //         Math.cos((lat1 * Math.PI) / 180) *
@@ -76,22 +79,24 @@ export const Routing = () => {
                 //             Math.sin(dLon / 2) *
                 //             Math.sin(dLon / 2)
                 //     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-            
+
                 //     const distance = R * c
                 //     return distance
                 // }
-
             }
         },
     })
 
-    const routingControl = useMemo(() => getRoutingControl(routes?.length), [routes?.length])
+    const routingControl = useMemo(
+        () => getRoutingControl(routes?.length),
+        [routes?.length]
+    )
 
     useEffect(() => {
         if (!map) return
 
         routingControl.addTo(map)
-        
+
         routingControl.setWaypoints([
             ...(routes.map(
                 (route) =>
@@ -103,7 +108,6 @@ export const Routing = () => {
             map.removeControl(routingControl)
         }
     }, [map, routes])
-
 
     return null
 }

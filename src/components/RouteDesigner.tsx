@@ -1,8 +1,8 @@
-import React from "react"
-import { LatLngExpression } from "leaflet"
 import GpxParser from "gpxparser"
-import { gpxData } from "../mock/gpxData/gpx"
+import { LatLngExpression } from "leaflet"
 import { Polyline } from "react-leaflet"
+
+import { gpxData } from "../mock/gpxData/gpx"
 
 export const RouteDesigner = () => {
     const gpx = new GpxParser()

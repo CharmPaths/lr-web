@@ -30,7 +30,7 @@ export interface IPolyline {
     id: number | string
     lat: number
     lng: number
-    timeStamp: number 
+    timeStamp: number
 }
 
 export interface IImages {

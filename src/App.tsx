@@ -1,46 +1,32 @@
-import "leaflet/dist/leaflet.css"
-import { MapContainer,  TileLayer } from "react-leaflet"
-import { RouteDesigner } from "./components/RouteDesigner"
-import { Toolbar } from "./components/Toolbar/Toolbar"
-import { ImageLibrary } from "./components/ImageLibrary/ImageLibrary"
-import { ImageTags } from "./components/ImageTags/ImageTags"
-import { LocationMarker } from "./components/LocationMarker/LocationMarker"
-import { Utils } from "./components/Utils/Utils"
-import { Helmet } from "react-helmet"
-import { ModalChangePhotoInfo } from "./components/ModalChangePhotoInfo/ModalChangePhotoInfo"
-import { useDataBaseInitialStatuses } from "./hooks/useDataBaseInitialStatuses"
-import { tileLayerAttribution, tileLayerUrl } from "./constants"
-import { Routing } from "./components/Routing/Routing"
-import { Polylines } from "./components/Polylines/Polylines"
+import { ConfigProvider } from "antd"
+import ru_RU from "antd/lib/locale/ru_RU"
+import { Provider } from "react-redux"
 
-function App() {
+import { ImageLibrary } from "components/ImageLibrary/ImageLibrary"
+import { Map } from "components/Map"
+import { ModalChangePhotoInfo } from "components/ModalChangePhotoInfo/ModalChangePhotoInfo"
+import { Toolbar } from "components/Toolbar/Toolbar"
+import { Utils } from "components/Utils/Utils"
+import { FileProvider } from "context/FileContext"
+import { useDataBaseInitialStatuses } from "hooks/useDataBaseInitialStatuses"
+import { store } from "store/rootReducer"
+
+import "leaflet/dist/leaflet.css"
+
+export function App() {
     useDataBaseInitialStatuses()
 
     return (
-        <>
-            <MapContainer
-                center={[55.7522, 37.6156]}
-                zoom={13}
-                doubleClickZoom={false}
-            >
-                <Helmet title="Map App" />
-                <TileLayer
-                    attribution={tileLayerAttribution}
-                    url={tileLayerUrl}
-                />
-                <LocationMarker />
-                <ImageTags />
-                <RouteDesigner />
-                <Routing />
-                <Polylines />
-            </MapContainer>
-
-            <ModalChangePhotoInfo />
-            <ImageLibrary />
-            <Utils />
-            <Toolbar />
-        </>
+        <ConfigProvider locale={ru_RU}>
+            <Provider store={store}>
+                <FileProvider>
+                    <Map />
+                    <ModalChangePhotoInfo />
+                    <ImageLibrary />
+                    <Utils />
+                    <Toolbar />
+                </FileProvider>
+            </Provider>
+        </ConfigProvider>
     )
 }
-
-export default App
